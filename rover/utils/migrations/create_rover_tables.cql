@@ -30,3 +30,15 @@ create table if not exists owner_by_sitter(
     end_date timestamp,
     PRIMARY KEY((sitter_id), owner_id)
 );
+
+create table if not exists sitter_name_by_id(
+    sitter_id int,
+    sitter_name text,
+    PRIMARY KEY(sitter_id)
+);
+
+create table if not exists owner_name_by_id(
+    owner_id int,
+    owner_name text,
+    PRIMARY KEY(owner_id)
+);
