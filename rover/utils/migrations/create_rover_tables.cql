@@ -1,3 +1,7 @@
+// The following code is to be used in creating the schema in Cassandra
+// Another option is CQLEngines management class sync_table, however it
+// does not allow full flexability.
+
 use rover
 create table if not exists sitter_profile(
     id int,
@@ -19,7 +23,7 @@ create table if not exists sitter_by_owner(
     sitter_id int,
     start_date timestamp,
     end_date timestamp,
-    dogs_handles set<text>,
+    dogs_handled set<text>,
     primary key((owner_id), sitter_id)
 );
 

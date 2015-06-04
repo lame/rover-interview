@@ -1,3 +1,5 @@
+//Temporary table for use in data recovery, should be depricated after scrape upload
+
 use rover;
 create table if not exists csv_import(
     id uuid,
@@ -9,7 +11,7 @@ create table if not exists csv_import(
     profile_text text,
     owner_image text,
     dogs set<text>,
-    sitter list<text>,
+    sitter text,
     owner text,
     owner_id int,
     PRIMARY KEY (id)
