@@ -34,14 +34,16 @@ class CSVTest(TestCase):
         self.file = parentdir + '/utils/data/test_csv.csv'
         with open(self.file, 'w+') as outfile:
             wr = csv.writer(outfile, delimiter=',', quoting=csv.QUOTE_ALL)
-            wr.writerow(data)
+            wr.writerows(data)
 
     def setUp(self):
         Conn()
 
-        data = [5, 'http://placekitten.com/g/500/500?user=3388',
-                '2013-04-08', 'Blah', 'http://placekitten.com/g/500/500?user=1222',
-                'Pinot Grigio', 'Lauren B.', 'Shelli K.', '2013-02-26']
+        data = [['rating', 'sitter_image', 'end_date', 'text',
+                 'owner_image', 'dogs', 'sitter', 'owner', 'start_date'],
+                [5, 'http://placekitten.com/g/500/500?user=3388',
+                 '2013-04-08', 'Blah', 'http://placekitten.com/g/500/500?user=1222',
+                 'Pinot Grigio', 'Lauren B.', 'Shelli K.', '2013-02-26']]
         self.csv_from_list(data)
         CSVReader('test_csv.csv')
 

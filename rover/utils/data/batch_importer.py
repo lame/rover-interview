@@ -29,7 +29,7 @@ class CSVReader:
         Conn()
         #  FIXME: need to check that sys.path[0] works on other machines
         with open(os.path.abspath(sys.path[0] + '/utils/data/' + file),
-                  'rb') as csvfile:
+                  'r') as csvfile:
             next(csvfile)
             csv_reader = csv.reader(csvfile)
 
@@ -41,7 +41,6 @@ class CSVReader:
             but has a tendency to cause circular import problems
             as the codebase expands.
             """
-            import pdb; pdb.set_trace()
             for row in csv_reader:
 
                 #  TODO<Ryan>: This should be threaded off for every save async
