@@ -9,3 +9,4 @@ class SitterByOwner(Model):
     start_date = columns.DateTime()
     end_date = columns.DateTime()
     dogs_handled = columns.Set(columns.Text)
+    rating = columns.Integer()
