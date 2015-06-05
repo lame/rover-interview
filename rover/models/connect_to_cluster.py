@@ -10,4 +10,4 @@ class Conn:
         reactivate a session if one is active already
         """
         if connection.get_session() is None:
-            connection.setup(cassandra_cluster_ip, cassandra_default_keyspace)
+            connection.setup([cassandra_cluster_ip], cassandra_default_keyspace)
