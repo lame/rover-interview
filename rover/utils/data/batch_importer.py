@@ -22,7 +22,6 @@ class CSVReader:
         if infile is None:
             self.csv_walker('reviews.csv')
         else:
-            print(infile)
             self.csv_walker(infile)
 
     def csv_walker(self, file):
@@ -52,8 +51,6 @@ class CSVReader:
                 self.populate_sitter_name_by_id(row)
                 self.populate_sitter_profile(row)
                 self.populate_rating_by_sitter(row)
-
-            print('Done with CSV import')
 
     def calculate_sitter_score(self, name):
         dist_letters = set()

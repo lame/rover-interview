@@ -36,6 +36,14 @@ class CSVTest(TestCase):
             wr = csv.writer(outfile, delimiter=',', quoting=csv.QUOTE_ALL)
             wr.writerows(data)
 
+    def calculate_sitter_score(self, name):
+        dist_letters = set()
+        for letter in name:
+            if letter.isalnum():
+                dist_letters.add(letter.lower())
+
+        return(5*(len(dist_letters)/26))
+
     def setUp(self):
         Conn()
 
@@ -68,6 +76,43 @@ class CSVTest(TestCase):
         q = OwnerBySitter.objects.filter(sitter_id=3388)
         match = q.get()
         self.assertEqual(match.owner_id, 1222)
+
+    def test_owner_name_by_id(self):
+        q = OwnerNameByID.objects.filter(owner_id=1222)
+        match = q.get()
+        self.assertEqual(match.owner_name, 'Shelli K.')
+
+    def test_owner_profile(self):
+        q = OwnerProfile.objects.filter(id=1222)
+        match = q.get()
+        self.assertEqual(match.owner_review_text, 'Blah')
+        self.assertEqual(match.image, 'http://placekitten.com/g/500/500?user=1222')
+        self.assertTrue('Pinot Grigio' in match.dogs)
+
+    def test_rating_by_sitter(self):
+        q = RatingBySitter.objects.filter(sitter_id=3388)
+        match = q.get()
+        self.assertIsNotNone(match.id)
+        self.assertIsNotNone(match.rating)
+
+    def test_sitter_by_owner(self):
+        q = SitterByOwner.objects.filter(owner_id=1222)
+        match = q.get()
+        self.assertEqual(match.sitter_id, 3388)
+
+    def test_sitter_name_by_id(self):
+        q = SitterNameByID.objects.filter(sitter_id=3388)
+        match = q.get()
+        self.assertEqual(match.sitter_name, 'Lauren B.')
+
+    def test_sitter_profile(self):
+        q = SitterProfile.objects.filter(id=3388)
+        match = q.get()
+        self.assertEqual(match.image, 'http://placekitten.com/g/500/500?user=3388')
+        self.assertEqual(match.owner_review_text, 'Blah')
+        self.assertEqual(match.score, self.calculate_sitter_score('Lauren B.'))
+        self.assertIsNotNone(match.rating)
+
 
 if __name__ == '__main__':
     unittest.main()
