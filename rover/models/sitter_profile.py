@@ -8,4 +8,4 @@ class SitterProfile(Model):
     image = columns.Text()
     owner_review_text = columns.Text()
     score = columns.Float(double_precision=True)
-    rating = columns.Decimal()
+    rating = columns.Float(double_precision=True)
