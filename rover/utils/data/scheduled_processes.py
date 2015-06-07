@@ -22,13 +22,13 @@ class Scheduler:
     # FIXME: Needs to be threaded
     def __init__(self):
         s = sched.scheduler(time.time, time.sleep)
-        s.enter(9, 1, self.run_scheduled_processes, (s,))
+        s.enter(900, 1, self.run_scheduled_processes, (s,))
         s.run()
 
     def run_scheduled_processes(self, sc):
-        sc.enter(9, 1, self.run_calculate_sitter_rating, (sc,))
-        sc.enter(9, 2, self.run_sorted_sitter_by_rating, (sc,))
-        sc.enter(9, 3, self.run_scheduled_processes, (sc,))
+        sc.enter(900, 1, self.run_calculate_sitter_rating, (sc,))
+        sc.enter(900, 2, self.run_sorted_sitter_by_rating, (sc,))
+        sc.enter(900, 3, self.run_scheduled_processes, (sc,))
 
     def run_calculate_sitter_rating(*args, **kwargs):
         CalculateSitterRating()
