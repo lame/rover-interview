@@ -27,30 +27,39 @@ class CSVReader:
     def csv_walker(self, file):
         Conn()
         #  FIXME: need to check that sys.path[0] works on other machines
-        with open(os.path.abspath(sys.path[0] + '/utils/data/' + file),
-                  'r') as csvfile:
-            next(csvfile)
-            csv_reader = csv.reader(csvfile)
+        if os.path.isfile(os.getcwd() + '/utils/data/' + file):
+            with open((os.getcwd() + '/utils/data/' + file),
+                      'r') as csvfile:
+                next(csvfile)
+                csv_reader = csv.reader(csvfile)
+                for row in csv_reader:
+                    self.call_tables(row)
 
-            """
-            This for loop will fill out all of the tables,
-            including the duplicate tables. Will create a
-            data migration script at a later date. An overloaded
-            save is another option in the CSVImport class
-            but has a tendency to cause circular import problems
-            as the codebase expands.
-            """
-            for row in csv_reader:
+        elif os.path.isfile(os.path.abspath(sys.path[0] + '/utils/data/' + file)):
+            with open(os.path.abspath(sys.path[0] + '/utils/data/' + file),
+                      'r') as csvfile:
+                next(csvfile)
+                csv_reader = csv.reader(csvfile)
+                for row in csv_reader:
+                    self.call_tables(row)
 
-                #  TODO<Ryan>: This should be threaded off for every save async
-                self.populate_csv_import(row)
-                self.populate_owner_by_sitter(row)
-                self.populate_owner_name_by_id(row)
-                self.populate_owner_profile(row)
-                self.populate_sitter_by_owner(row)
-                self.populate_sitter_name_by_id(row)
-                self.populate_sitter_profile(row)
-                self.populate_rating_by_sitter(row)
+    def call_tables(self, row):
+        """
+        This for loop will fill out all of the tables,
+        including the duplicate tables. Will create a
+        data migration script at a later date. An overloaded
+        save is another option in the CSVImport class
+        but has a tendency to cause circular import problems
+        as the codebase expands.
+        """
+        self.populate_csv_import(row)
+        self.populate_owner_by_sitter(row)
+        self.populate_owner_name_by_id(row)
+        self.populate_owner_profile(row)
+        self.populate_sitter_by_owner(row)
+        self.populate_sitter_name_by_id(row)
+        self.populate_sitter_profile(row)
+        self.populate_rating_by_sitter(row)
 
     def calculate_sitter_score(self, name):
         dist_letters = set()

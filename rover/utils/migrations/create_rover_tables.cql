@@ -7,7 +7,7 @@ create table if not exists sitter_profile(
     id int,
     image text,
     owner_review_text text,
-    rating decimal,
+    rating double,
     score double,
     PRIMARY KEY (id)
 );
@@ -54,8 +54,14 @@ create table if not exists owner_name_by_id(
 
 create table if not exists rating_by_sitter(
     sitter_id int,
-    rating decimal,
+    rating double,
     id uuid,
     PRIMARY KEY(sitter_id)
 );
 
+create table if not exists sitters_by_rating(
+    overall_rank int,
+    rating double,
+    sitter_id int,
+    PRIMARY KEY(overall_rank)
+);
