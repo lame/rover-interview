@@ -101,6 +101,7 @@ class CSVReader:
     def populate_owner_profile(self, row):
         owner_profile = OwnerProfile()
         owner_profile.id = re.findall('(?<=\\=)(.*$)', row[4])[0]
+        owner_profile.name = row[7]
         owner_profile.image = row[4]
         owner_profile.owner_review_text = row[3]
         owner_profile.dogs = set(row[5].split('|'))
@@ -125,6 +126,7 @@ class CSVReader:
     def populate_sitter_profile(self, row):
         sitter_profile = SitterProfile()
         sitter_profile.id = re.findall('(?<=\\=)(.*$)', row[1])[0]
+        sitter_profile.name = row[6]
         sitter_profile.image = row[1]
         sitter_profile.owner_review_text = row[3]
         sitter_profile.rating = row[0]
