@@ -5,6 +5,7 @@
 use rover
 create table if not exists sitter_profile(
     id int,
+    name text,
     image text,
     owner_review_text text,
     rating double,
@@ -16,6 +17,7 @@ CREATE INDEX ON rover.sitter_profile(score);
 
 create table if not exists owner_profile(
     id int,
+    name text,
     image text,
     owner_review_text text,
     dogs set<text>,
