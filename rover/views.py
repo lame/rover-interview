@@ -12,4 +12,4 @@ def index():
 @app.route('/sitters', methods=['GET'])
 def sitters():
     return(render_template('sitters.html',
-                           sitters=SitterProfile.objects.all()))
+                           sitters=SitterProfile.objects.all().limit(10)))

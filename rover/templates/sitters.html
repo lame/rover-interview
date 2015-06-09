@@ -1,34 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
-<body ng-controller="RoverApp">
-    <div ng-controller="safeCtrl">
+<body np-app>
+    <h1>{{search}}</h1>
+    <input ng-model="search">
 
-            <table st-table="displayedCollection" st-safe-src="rowCollection" class="table table-striped">
-                <thead>
-                <tr>
-                    <th st-sort="sitter.name">Name</th>
-                    <th st-sort="sitter.rating">Rating</th>
-                </tr>
-                <tr>
-                    <th colspan="5"><input st-search="" class="form-control" placeholder="Sitter Search" type="text"/></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="row in sitters">
-                    <td ng-bind="sitter.name"></td>
-                    <td ng-bind="sitter.image"></td>
-                    <td ng-bind="sitter.rating"></td>
-                    <td>
-                    <button type="button" ng-click="removeItem(row)" class="btn btn-sm btn-danger">
-                        <i class="glyphicon glyphicon-remove-circle">
-                        </i>
-                    </button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-
-        </div>
     <ul id="navigation">
         {% for sitter in sitters %}
             <div class="media">

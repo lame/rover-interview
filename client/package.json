@@ -1,0 +1,32 @@
+{
+  "name": "client",
+  "version": "0.0.0",
+  "description": "Rover interview codebase with AngularJS support",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/roverjobs/interview-rkk09c.git"
+  },
+  "keywords": [
+    "rover"
+  ],
+  "author": "Ryan Kuhl",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/roverjobs/interview-rkk09c/issues"
+  },
+  "homepage": "https://github.com/roverjobs/interview-rkk09c#readme",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-jshint": "^0.11.2",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-serve": "^0.1.6"
+  },
+  "dependencies": {
+    "grunt": "^0.4.5"
+  }
+}
