@@ -1,0 +1,25 @@
+<div class="container-fluid" ng-controller="SearchSittersController">
+    <h1 ng-bind="search"></h1>
+    <input ng-model="search">
+
+    <ul id="navigation">
+        <li ng-repeat="sitter in sitters">
+            <div class="media">
+                <div class="media-left media-middle">
+                    <a href="#">
+                        <img class="media-object" src="{{sitter.image}}">
+                    </a>
+                </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">
+                            <span ng-bind="sitter.name"></span>
+                            <span ng-bind="sitter.rating"></span>
+                        </h4>
+                        <p>
+                            <span ng-bind="sitter.owner_review_text"></span>
+                        </p>
+                    </div>
+            </div>
+        </li>
+    </ul>
+</div>

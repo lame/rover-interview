@@ -3,7 +3,7 @@
   angular.module('RoverApp')
   .config(['$stateProvider','$urlRouterProvider', '$locationProvider',
            function ($stateProvider, $urlRouterProvider, $locationProvider) {
-    $urlRouterProvider.otherwise('/index');
+    $urlRouterProvider.otherwise('/welcome');
 
     $stateProvider
     .state('search-sitters', {
@@ -11,5 +11,11 @@
       templateUrl: 'views/search_sitters.html',
       controller: 'SearchSitterController'
     })
+
+    .state('welcome', {
+      url:'/',
+      templateUrl: 'views/welcome.html'
+    })
+
   }]);
 })();
