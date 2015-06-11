@@ -7,12 +7,12 @@
     function searchSittersService($http, Rover_Config){
         var searchSittersService = {
             getSitters: getSitters,
-            sitterData: {},
         };
+        return searchSittersService;
 
-        function getSitters(){
-            return $http.get(Rover_Config.apiUrl + 'api/sitters');
-        }
+    function getSitters(){
+        return $http.get(Rover_Config.apiUrl + 'api/sitters');
+    }
 
     }
 

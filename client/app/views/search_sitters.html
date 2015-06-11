@@ -2,6 +2,25 @@
     <h1 ng-bind="search"></h1>
     <input ng-model="search">
 
+    <table st-safe-src="ctrl.sitters" st-table="sitters" class="table table-striped">
+        <thead>
+            <tr>
+                <th>image</th>
+                <th>name</th>
+                <th>score</th>
+                <th>owner_review_text</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="row in sitters">
+                <td>{{row.image}}</td>
+                <td>{{row.name}}</td>
+                <td>{{row.score}}</td>
+                <td>{{row.owner_review_text}}</td>
+            </tr>
+        </tbody>
+    </table>
+
     <ul id="navigation">
         <li ng-repeat="sitter in sitters">
             <div class="media">
