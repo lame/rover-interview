@@ -27,15 +27,28 @@ angular.module('RoverApp').controller('SearchSittersController', ["$scope", "$el
         });
     };
 
+    $scope.getTableStyle= function() {
+        var rowHeight=142;
+        var headerHeight=45;
+        return {
+            height: ($scope.loadData.length * rowHeight + headerHeight) + "px"
+        };
+    };
+
     $scope.gridOptions = {
         data: 'loadData',
         columnDefs: [
-            {name: 'Image', field: 'image'},
-            {name: 'Name', field: 'name'},
-            {name: 'Rating', field: 'rating'},
-            {name: 'Recent Owner Review', field: 'owner_review_text'}
+            {name: 'Image', field: 'image',
+             cellTemplate: '<div class="ui-grid-cell-contents"><img src="{{ COL_FIELD }}" height="142"/></div>',
+             width: 150
+            },
+            {name: 'Name', field: 'name', width: 150},
+            {name: 'Rating', field: 'rating', width: 100},
+            {name: 'Recent Owner Review', field: 'owner_review_text',
+            cellTemplate: '<div class="ui-grid-cell-contents overflow"><p>{{ COL_FIELD }}</p></div>'}
         ],
-        enableSorting: true
+        enableSorting: true,
+        rowHeight:142,
     };
 }]);
 
