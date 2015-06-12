@@ -3,7 +3,7 @@
 
     angular.module('RoverApp', [
         'ngRoute',
-        'smart-table',
+        'ui.grid',
         'ui.router',
     ])
 })();

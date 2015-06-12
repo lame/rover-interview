@@ -26,13 +26,15 @@
     "angular-smart-table": "~2.0.3",
     "fontawesome": "~4.3.0",
     "angular-route": "~1.4.0",
-    "angular-ui-router": "~0.2.15"
+    "angular-ui-router": "~0.2.15",
+    "angular-ui-grid": "~3.0.0-rc.21"
   },
   "devDependencies": {
     "angular": "~1.4.0",
     "angular-smart-table": "~2.0.3",
     "fontawesome": "~4.3.0",
     "angular-route": "~1.4.0",
-    "angular-ui-router": "~0.2.15"
+    "angular-ui-router": "~0.2.15",
+    "angular-ui-grid": "~3.0.0-rc.21"
   }
 }

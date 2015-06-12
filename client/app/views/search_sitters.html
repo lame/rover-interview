@@ -1,28 +1,4 @@
 <div class="container-fluid" ng-controller="SearchSittersController">
-    <table st-table="rowCollection" class="table table-striped">
-        <thead>
-            <tr>
-                <th>Sitter Image</th>
-                <th>Sitter Name</th>
-                <th st-sort="rating" st-sort-default="true">Rating</th>
-                <th>Owner Review</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr st-select-row="row" st-select-mode="multiple" ng-repeat="row in rowCollection">
-                <td>
-                    <img class="media-object" src="{{row.image}}" height="142">
-                </td>
-                <td>
-                    <span ng-bind="row.name"></span>
-                </td>
-                <td>
-                    <span ng-bind="row.rating"></span>
-                </td>
-                <td>
-                    <span ng-bind="row.owner_review_text"></span>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div id="grid1" ui-grid="{ data: rowCollection }" class="grid"></div>
+
 </div>
