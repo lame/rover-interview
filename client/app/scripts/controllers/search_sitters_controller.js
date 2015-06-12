@@ -1,22 +1,45 @@
-angular.module('RoverApp').controller('SearchSittersController', ['$scope', '$http', '$filter', 'searchSittersService', function($scope, $http, $filter, searchSittersService){
-    var ctrl = this;
+angular.module('RoverApp').controller('SearchSittersController', ["$scope", "$element", "$compile", "$http", "$q", "searchSittersService", function($scope, $element, $compile, $http, $q, searchSittersService){
 
-    ctrl.getSitters = function() {
+    getSitters = function() {
+        var deferred = $q.defer();
+
         searchSittersService.getSitters()
             .success(function(data, status, headers, config) {
-                console.log('success', status)
-                console.log('sitters data', data)
-                $scope.rowCollection = data
+                console.log('success', status);
+                console.log('sitters data', data);
+                deferred.resolve(data);
             })
             .error(function(data, status, headers, config) {
-                console.log('error', status)
+                console.log('error', status);
+                deferred.reject;
             });
-        };
+        return deferred.promise;
+    };
 
-    ctrl.getSitters();
+    $scope.gridData = function() {
+        getSitters().then(function (data) {
+            console.log('data: ', data);
+            if (data !== undefined)
+            {
+
+                $scope.loadData = data;
+            }
+        });
+    };
+
+    $scope.gridOptions = {
+        data: 'loadData',
+        columnDefs: [
+            {name: 'Image', field: 'image'},
+            {name: 'Name', field: 'name'},
+            {name: 'Rating', field: 'rating'},
+            {name: 'Recent Owner Review', field: 'owner_review_text'}
+        ],
+        enableSorting: true
+    };
 }]);
 
-// Different controller syntax, doesn't seem to want to work!
+// Different controller syntax, doesn't seem to want to work
 
 // (function() {
 //     'use strict';

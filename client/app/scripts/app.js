@@ -5,5 +5,6 @@
         'ngRoute',
         'ui.grid',
         'ui.router',
+        'ui.grid.edit'
     ])
 })();
