@@ -42,16 +42,16 @@ create table if not exists owner_by_sitter(
     PRIMARY KEY((sitter_id), owner_id)
 );
 
-create table if not exists sitter_name_by_id(
-    sitter_id int,
+create table if not exists sitter_id_by_name(
     sitter_name text,
-    PRIMARY KEY(sitter_id)
+    sitter_id int,
+    PRIMARY KEY((sitter_name), sitter_id)
 );
 
-create table if not exists owner_name_by_id(
-    owner_id int,
+create table if not exists owner_id_by_name(
     owner_name text,
-    PRIMARY KEY(owner_id)
+    owner_id int,
+    PRIMARY KEY((owner_name), owner_id)
 );
 
 create table if not exists rating_by_sitter(

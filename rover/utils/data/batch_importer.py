@@ -7,10 +7,10 @@ from dateutil import parser
 
 from models.csv_import import CSVImport
 from models.owner_by_sitter import OwnerBySitter
-from models.owner_name_by_id import OwnerNameByID
+from models.owner_id_by_name import OwnerIDByName
 from models.owner_profile import OwnerProfile
 from models.sitter_by_owner import SitterByOwner
-from models.sitter_name_by_id import SitterNameByID
+from models.sitter_ import SitterIDByName
 from models.sitter_profile import SitterProfile
 from models.rating_by_sitter import RatingBySitter
 from models.connect_to_cluster import Conn
@@ -54,10 +54,10 @@ class CSVReader:
         """
         self.populate_csv_import(row)
         self.populate_owner_by_sitter(row)
-        self.populate_owner_name_by_id(row)
+        self.populate_owner_id_by_name(row)
         self.populate_owner_profile(row)
         self.populate_sitter_by_owner(row)
-        self.populate_sitter_name_by_id(row)
+        self.populate_sitter_id_by_name(row)
         self.populate_sitter_profile(row)
         self.populate_rating_by_sitter(row)
 
@@ -92,8 +92,8 @@ class CSVReader:
         owner_by_sitter.owner_id = re.findall('(?<=\\=)(.*$)', row[4])[0]
         owner_by_sitter.save()
 
-    def populate_owner_name_by_id(self, row):
-        owner_name_by_id = OwnerNameByID()
+    def populate_owner_id_by_name(self, row):
+        owner_name_by_id = OwnerIDByName()
         owner_name_by_id.owner_name = row[7]
         owner_name_by_id.owner_id = re.findall('(?<=\\=)(.*$)', row[4])[0]
         owner_name_by_id.save()
@@ -117,8 +117,8 @@ class CSVReader:
         sitter_by_owner.rating = row[0]
         sitter_by_owner.save()
 
-    def populate_sitter_name_by_id(self, row):
-        sitter_name_by_id = SitterNameByID()
+    def populate_sitter_id_by_name(self, row):
+        sitter_name_by_id = SitterIDByName()
         sitter_name_by_id.sitter_id = re.findall('(?<=\\=)(.*$)', row[1])[0]
         sitter_name_by_id.sitter_name = row[6]
         sitter_name_by_id.save()

@@ -22,18 +22,20 @@ class Scheduler:
     # FIXME: Needs to be threaded
     def __init__(self):
         s = sched.scheduler(time.time, time.sleep)
-        s.enter(900, 1, self.run_scheduled_processes, (s,))
+        s.enter(9, 1, self.run_scheduled_processes, (s,))
         s.run()
 
     def run_scheduled_processes(self, sc):
-        sc.enter(900, 1, self.run_calculate_sitter_rating, (sc,))
-        sc.enter(900, 2, self.run_sorted_sitter_by_rating, (sc,))
-        sc.enter(900, 3, self.run_scheduled_processes, (sc,))
+        sc.enter(9, 1, self.run_calculate_sitter_rating, (sc,))
+        sc.enter(9, 2, self.run_sorted_sitter_by_rating, (sc,))
+        sc.enter(9, 3, self.run_scheduled_processes, (sc,))
 
     def run_calculate_sitter_rating(*args, **kwargs):
+        print('running calc sitter rating')
         CalculateSitterRating()
 
     def run_sorted_sitter_by_rating(*args, **kwargs):
+        print('running sorted sitter by rating')
         SortedSitterByRating()
 
 
@@ -55,20 +57,26 @@ class CalculateSitterRating:
     def update_rating(self):
         rows = self.session.execute('SELECT id, score FROM sitter_profile')
         for row in rows:
-            average_rating = self.get_sitter_rating_by_id(row.id, row.score)
-            self.set_sitter_rating_by_id(row.id, average_rating)
+            weighted_rating = self.get_sitter_rating_by_id(row.id, row.score)
+            self.set_sitter_rating_by_id(row.id, weighted_rating)
 
     def get_sitter_rating_by_id(self, id, score):
         reviews = self.session.execute('SELECT rating FROM rating_by_sitter WHERE sitter_id = {id}'.format(id=id))
-        total_reviews = 0
-        average_rating = 0.0
+        calc_rating = 0.0
         if len(reviews) == 0:
-            average_rating = score
-        elif len(reviews) >= 1:
-            for review in reviews:
-                total_reviews += review.rating
-            average_rating = total_reviews/len(reviews)
-        return average_rating
+            calc_rating = score
+        elif len(reviews) >= 1 and len(reviews) < 10:
+            weight_factor = ((self.average_review(reviews) - score) / 10)
+            calc_rating = ((weight_factor * len(reviews)) + score)
+        else:
+            calc_rating = self.average_review(reviews)
+        return calc_rating
+
+    def average_review(self, reviews):
+        total_reviews = 0
+        for review in reviews:
+            total_reviews += review.rating
+        return(total_reviews/len(reviews))
 
     # FIXME<Ryan>: Make a batch statement
     def set_sitter_rating_by_id(self, id, rating):

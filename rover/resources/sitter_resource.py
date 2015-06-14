@@ -1,4 +1,3 @@
-from flask import jsonify
 from flask.ext.restful import Resource
 from models.sitter_profile import SitterProfile
 
