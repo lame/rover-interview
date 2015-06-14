@@ -1,3 +1,4 @@
 .overflow {
-    overflow:visible
+    overflow: visible
+    white-space: normal;
 }
