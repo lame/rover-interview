@@ -1,24 +1,33 @@
 # Bisect should be used in refactoring for increased performance
 # import bisect
+import os
 import sched
 import time
 
+parentdir = os.path.abspath(os.curdir)
+os.sys.path.insert(0, parentdir)
+
+from app import app
 from cassandra.cluster import Cluster
 from cassandra.query import BatchStatement
 from config import cassandra_cluster_ip, cassandra_default_keyspace
 
-
 """
-With cassandra, it is inefficient to create
-a 'count' or average that requires a read-write.
-Because it is not program essential to have this
-be an exact number all the time, it is a perfect
-candidate for a batch update. This can be tuned to
-update as frequently as desired.
+This file needs to be runs as a separate process,
+in production this should be added in as a hook or
+run as a cron job with python scheduling removed.
 """
 
 
 class Scheduler:
+    """
+    With cassandra, it is inefficient to create
+    a 'count' or average that requires a read-write.
+    Because it is not program essential to have this
+    be an exact number all the time, it is a perfect
+    candidate for a batch update. This can be tuned to
+    update as frequently as desired.
+    """
     # FIXME: Needs to be threaded
     def __init__(self):
         s = sched.scheduler(time.time, time.sleep)
@@ -29,6 +38,7 @@ class Scheduler:
         sc.enter(9, 1, self.run_calculate_sitter_rating, (sc,))
         sc.enter(9, 2, self.run_sorted_sitter_by_rating, (sc,))
         sc.enter(9, 3, self.run_scheduled_processes, (sc,))
+        sc.run()
 
     def run_calculate_sitter_rating(*args, **kwargs):
         print('running calc sitter rating')
@@ -52,36 +62,36 @@ class CalculateSitterRating:
         #  Connect to cassandra cluster and keyspace
         cluster = Cluster([cassandra_cluster_ip])
         self.session = cluster.connect(cassandra_default_keyspace)
+        self.insert_sitter_profile = self.session.prepare('INSERT INTO sitter_profile\
+                                                          (id, rating)\
+                                                          VALUES (?, ?)')
+        self.batch = BatchStatement()
         self.update_rating()
 
     def update_rating(self):
         rows = self.session.execute('SELECT id, score FROM sitter_profile')
         for row in rows:
-            weighted_rating = self.get_sitter_rating_by_id(row.id, row.score)
-            self.set_sitter_rating_by_id(row.id, weighted_rating)
+            reviews = self.session.execute('SELECT rating FROM rating_by_sitter\
+                                           WHERE sitter_id = {0}'.format(row.id))
+            weighted_rating = self.get_sitter_rating_by_id(row.id, row.score, reviews)
+            self.batch.add(self.insert_sitter_profile, (row.id, weighted_rating))
+        self.session.execute(self.batch)
 
-    def get_sitter_rating_by_id(self, id, score):
-        reviews = self.session.execute('SELECT rating FROM rating_by_sitter WHERE sitter_id = {id}'.format(id=id))
+    def get_sitter_rating_by_id(self, id, score, reviews):
         calc_rating = 0.0
-        if len(reviews) == 0:
-            calc_rating = score
-        elif len(reviews) >= 1 and len(reviews) < 10:
-            weight_factor = ((self.average_review(reviews) - score) / 10)
-            calc_rating = ((weight_factor * len(reviews)) + score)
-        else:
-            calc_rating = self.average_review(reviews)
-        return calc_rating
-
-    def average_review(self, reviews):
         total_reviews = 0
+
         for review in reviews:
             total_reviews += review.rating
-        return(total_reviews/len(reviews))
 
-    # FIXME<Ryan>: Make a batch statement
-    def set_sitter_rating_by_id(self, id, rating):
-        self.session.execute('UPDATE sitter_profile SET\
-                             rating = {rating} WHERE id = {id}'.format(rating=rating, id=id))
+        if len(reviews) == 0:
+            calc_rating = score
+        elif len(reviews) > 0 and len(reviews) < 10:
+            weight_factor = (((total_reviews / len(reviews)) - score) / 10)
+            calc_rating = ((weight_factor * len(reviews)) + score)
+        else:
+            calc_rating = total_reviews / len(reviews)
+        return calc_rating
 
 
 class SortedSitterByRating:
@@ -115,3 +125,7 @@ class SortedSitterByRating:
         for row in rows:
             self.sorted_list.append((row.rating, row.id))
         return sorted(self.sorted_list, key=self.getKey, reverse=True)
+
+
+if __name__ == "__main__":
+    Scheduler()
