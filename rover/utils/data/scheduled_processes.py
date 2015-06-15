@@ -14,7 +14,8 @@ from config import cassandra_cluster_ip, cassandra_default_keyspace
 
 """
 This file needs to be runs as a separate process,
-in production this should be added in as a hook
+in production this should be added in as a hook or
+run as a cron job with python scheduling removed.
 """
 
 
