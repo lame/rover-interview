@@ -10,7 +10,7 @@ from models.owner_by_sitter import OwnerBySitter
 from models.owner_id_by_name import OwnerIDByName
 from models.owner_profile import OwnerProfile
 from models.sitter_by_owner import SitterByOwner
-from models.sitter_ import SitterIDByName
+from models.sitter_id_by_name import SitterIDByName
 from models.sitter_profile import SitterProfile
 from models.rating_by_sitter import RatingBySitter
 from models.connect_to_cluster import Conn

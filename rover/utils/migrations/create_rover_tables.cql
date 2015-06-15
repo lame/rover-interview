@@ -58,7 +58,7 @@ create table if not exists rating_by_sitter(
     sitter_id int,
     rating double,
     id uuid,
-    PRIMARY KEY(sitter_id)
+    PRIMARY KEY((sitter_id), id)
 );
 
 create table if not exists sitters_by_rating(

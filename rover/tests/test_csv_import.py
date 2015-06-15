@@ -4,7 +4,6 @@ import unittest
 from unittest import TestCase
 
 parentdir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-print(parentdir)
 os.sys.path.insert(0, parentdir)
 
 from app import app
